@@ -45,7 +45,6 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-    	
         Movement();
         if(Input.GetKeyDown(KeyCode.Space))
     	{
@@ -83,6 +82,7 @@ public class Player : MonoBehaviour
     		return;
     	canMove=false;
     	canAttack=false;
+    	thrustPower=250;
     	GameObject newSword = Instantiate(sword,transform.position,sword.transform.rotation);
     	if(currentHealth == maxHealth)
     	{
@@ -161,6 +161,19 @@ public class Player : MonoBehaviour
     		}
     		col.gameObject.GetComponent<Bullet>().CreateParticle();
     		Destroy(col.gameObject);
+    	}
+    	if(col.gameObject.tag == "Potion")
+    	{
+    		Destroy(col.gameObject);
+    		if(maxHealth >= 5)
+    			{	
+    				currentHealth=maxHealth;///sau +1 daca e hard
+    				return;
+    			}
+    		maxHealth++; 
+    		currentHealth = maxHealth; //sau +1 daca e hard
+    		
+    				
     	}
     }
 }
