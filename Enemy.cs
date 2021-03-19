@@ -42,11 +42,19 @@ protected void WallCollision(Collision2D col)
 {
 	if(col.gameObject.tag == "Wall")
     	{
-    		direction--;
-    		if(direction<0)
-    		{
-    			direction = 3;
-    		}
+           // Debug.Log("Ceva");
+    		switch(direction){
+                case 1: direction = 2;
+                    break;
+                case 2: direction = 1;
+                    break;
+                case 3: direction = 0;
+                    break;
+                case 0: direction = 3;
+                    break;
+                default: direction=1;
+                    break;
+            }
     	}
 }
 protected void SwordCollider(Collider2D col)
