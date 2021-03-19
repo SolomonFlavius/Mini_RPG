@@ -4,7 +4,8 @@ using UnityEngine;
 
 public class ParticleTimer : MonoBehaviour
 {
-    public float timer;
+    [SerializeField]
+    float timer;
     void Start()
     {
         

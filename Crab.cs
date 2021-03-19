@@ -2,32 +2,31 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Crab : MonoBehaviour
+public class Crab : Enemy
 {
-	public int health;//oare trb neaparat public
-	public GameObject particleEffect;//lucrat si la efectul asta
 	SpriteRenderer spriteRenderer;
-	int direction;
-	float timer = 1f;
-	public float speed;
-	public Sprite facingUp;
-	public Sprite facingDown;
-	public Sprite facingRight;
-	public Sprite facingLeft;
-    // Start is called before the first frame update
+    [SerializeField]
+	Sprite facingUp;
+    [SerializeField]
+	Sprite facingDown;
+    [SerializeField]
+	Sprite facingRight;
+    [SerializeField]
+	Sprite facingLeft;
+
     void Start()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
-        direction = Random.Range(0,3);
+        //direction = Random.Range(0,3);
     }
 
     // Update is called once per frame
     void Update()
     {
-        timer -= Time.deltaTime;
-        if(timer<=0)
+        directionTimer -= Time.deltaTime;
+        if(directionTimer<=0)
         {
-        	timer = 1.5f;
+        	directionTimer = 1.5f;
         	direction = Random.Range(0,3);
         }
         Movement();
@@ -60,43 +59,12 @@ public class Crab : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D col)
     {
-    	if(col.gameObject.tag == "Sword")
-    	{
-    		health--;
-    		if(health<=0)
-    		{
-    			Instantiate(particleEffect, transform.position,transform.rotation);
-    			Destroy(gameObject);
-    		}
-    		col.GetComponent<Sword>().CreateParticle();
-    		GameObject.FindGameObjectWithTag("Player").GetComponent<Player>().canAttack = true;
-    		Destroy(col.gameObject);
-    	}
+    	SwordCollider(col);
     }
 
     void OnCollisionEnter2D(Collision2D col)
     {
-    	if(col.gameObject.tag == "Player")
-    	{
-    		health--;//scadem si viata crabului????
-    		if(!col.gameObject.GetComponent<Player>().iniFrames)
-    		{
-    			col.gameObject.GetComponent<Player>().currentHealth--;
-    			col.gameObject.GetComponent<Player>().iniFrames = true;
-    		}
-    		if(health<=0)//functie ptr ASTA
-    		{
-    			Instantiate(particleEffect, transform.position,transform.rotation);
-    			Destroy(gameObject);
-    		}
-    	}
-    	if(col.gameObject.tag == "Wall")
-    	{
-    		direction--;
-    		if(direction<0)
-    		{
-    			direction = 3;
-    		}
-    	}
+    	PlayerCollision(col);
+    	WallCollision(col);    
     }
 }

@@ -5,13 +5,17 @@ using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
-	public float speed;
+	[SerializeField]
+	float speed;//boost undeva de viteza?????
 	Animator animator;
-	public Image[] hearts;
+	[SerializeField]
+	Image[] hearts;
 	public int maxHealth;
 	public int currentHealth;
-	public GameObject sword;
-	public float thrustPower;
+	[SerializeField]
+	GameObject sword;//WEAPON
+	[SerializeField]
+	float thrustPower;
 	public bool canMove;
 	public bool canAttack;
 	public bool iniFrames;//invicibility frames
@@ -46,13 +50,15 @@ public class Player : MonoBehaviour
     void Update()
     {
         Movement();
-        if(Input.GetKeyDown(KeyCode.Space))
-    	{
-    		Attack();
-    	}
-        if(currentHealth > maxHealth)//functie separata
-        	currentHealth = maxHealth;
-        if(iniFrames == true)
+    	Attack();
+        HealthTest();
+        InvicibilityTest();
+        GetHealth();
+    }
+
+    void InvicibilityTest()
+    {
+    	if(iniFrames == true)
         {
         	iniTimer-=Time.deltaTime;
         	int rn = Random.Range(0,100);
@@ -71,13 +77,17 @@ public class Player : MonoBehaviour
         		sr.enabled = true;
         	}
         }
-
-
-        GetHealth();
+    }
+    void HealthTest()
+    {
+    	if(currentHealth >= maxHealth)
+    		currentHealth = maxHealth;
     }
 
     void Attack()
     {
+    	if(Input.GetKeyDown(KeyCode.Space))
+    	{
     	if(!canAttack)
     		return;
     	canMove=false;
@@ -86,7 +96,7 @@ public class Player : MonoBehaviour
     	GameObject newSword = Instantiate(sword,transform.position,sword.transform.rotation);
     	if(currentHealth == maxHealth)
     	{
-    		newSword.GetComponent<Sword>().special = true;
+    		newSword.GetComponent<Sword>().SetSpecial(true);
     		canMove = true;
     		thrustPower = 500;
     	}
@@ -113,6 +123,7 @@ public class Player : MonoBehaviour
     			newSword.transform.Rotate(0,0,-90);
     			newSword.GetComponent<Rigidbody2D>().AddForce(Vector2.right * thrustPower);
     		}
+    	}
 
 
     }

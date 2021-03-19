@@ -7,12 +7,13 @@ public class Sword : MonoBehaviour
 	[SerializeField]
 	float timer = .15f;
 	float specialTimer = 1f;
-	public bool special;//special attack
-	public GameObject swordParticle;
+	bool special;//special attack
+    [SerializeField]
+	GameObject swordParticle;
     // Start is called before the first frame update
-    void Start()
+    public void SetSpecial(bool specialState)
     {
-        
+        special = specialState;
     }
 
     // Update is called once per frame
